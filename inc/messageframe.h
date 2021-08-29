@@ -1,4 +1,7 @@
-#include "dataframe.hpp"
+#ifndef _MESSAGEFRAME_HPP
+#define _MESSAGEFRAME_HPP
+
+#include "dataframe.h"
 
 namespace Needmon
 {
@@ -11,11 +14,16 @@ namespace Needmon
         MESSAGE_FRAME_HEADER_SIZE                ,
 
         MESSAGE_FRAME_HEADER_IDX_DATA         = MESSAGE_FRAME_HEADER_SIZE,
-    } messageFrameIndex_t;
+    } MessageFrameIndex;
 
-    const uint16_t MESSAGE_FRAME_SIZE         = DATA_FRAME_MAX_BUFFER_SIZE + MESSAGE_FRAME_HEADER_SIZE;
-    const uint8_t  MESSAGE_FRAME_SYNC_HIGH    = 0xAB;
-    const uint8_t  MESSAGE_FRAME_SYNC_LOW     = 0xCD;
+    typedef enum
+    {
+        MESSAGE_FRAME_SIZE         = DATA_FRAME_MAX_BUFFER_SIZE + MESSAGE_FRAME_HEADER_SIZE,
+        MESSAGE_FRAME_SYNC_HIGH    = 0xAB,
+        MESSAGE_FRAME_SYNC_LOW     = 0xCD,
+
+    } MessageFrameConsts;
+
 
     class MessageFrame : public DataFrame
     {
@@ -37,3 +45,5 @@ namespace Needmon
 
     };
 }
+
+#endif

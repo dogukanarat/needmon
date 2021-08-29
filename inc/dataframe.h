@@ -1,10 +1,16 @@
+#ifndef _DATAFRAME_HPP
+#define _DATAFRAME_HPP
+
 #include <stdint.h>
 #include <stdlib.h>
 #include <typeinfo>
 
 namespace Needmon
 {
-    const uint16_t DATA_FRAME_MAX_BUFFER_SIZE  = 255;
+    typedef enum
+    {
+        DATA_FRAME_MAX_BUFFER_SIZE  = 255,
+    } DataFrameConsts;
 
     typedef float  float32_t;
     typedef double float64_t;
@@ -66,3 +72,5 @@ namespace Needmon
         void ReadFromBuffer( byteConnector_t &converter, uint8_t byteCount );
     };
 }
+
+#endif
