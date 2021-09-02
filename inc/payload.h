@@ -1,5 +1,5 @@
-#ifndef _DATAFRAME_HPP
-#define _DATAFRAME_HPP
+#ifndef _NEEDMON_PAYLOAD_HPP
+#define _NEEDMON_PAYLOAD_HPP
 
 #include <stdint.h>
 #include <stdlib.h>
@@ -23,11 +23,11 @@ namespace Needmon
         uint8_t    ucBytes[8]  ;
     } byteConnector_t;
 
-    class DataFrame
+    class Payload
     {
         public:
-        DataFrame();
-        ~DataFrame() {};
+        Payload() : writeIdx(0), readIdx(0) {};
+        ~Payload() {};
 
         void Write( uint8_t   &data );
         void Write( uint16_t  &data );
@@ -52,9 +52,9 @@ namespace Needmon
         void Read( float64_t &returnBuffer );
 
         protected:
-        uint16_t dataFrameWriteIdx;
-        uint16_t dataFrameReadIdx ;
-        uint8_t  dataFrameBuffer[ DATA_FRAME_MAX_BUFFER_SIZE ];
+        uint16_t writeIdx;
+        uint16_t readIdx;
+        uint8_t  serialBuffer[ MAX_PAYLOAD_SIZE ];
 
         uint32_t GetDataCount();
         void     SetDataCount( uint32_t dataCount );

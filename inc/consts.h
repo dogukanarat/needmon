@@ -8,27 +8,26 @@ namespace Needmon
 
     typedef enum
     {
-        MESSAGE_FRAME_HEADER_IDX_SYNC_HIGH    = 0,
-        MESSAGE_FRAME_HEADER_IDX_SYNC_LOW        ,
-        MESSAGE_FRAME_HEADER_IDX_MESSAGE_ID      ,
-        MESSAGE_FRAME_HEADER_IDX_MESSAGE_SIZE    ,
-        MESSAGE_FRAME_HEADER_SIZE                ,
-        MESSAGE_FRAME_HEADER_IDX_DATA         = MESSAGE_FRAME_HEADER_SIZE,
-    } MessageFrameIndex;
+        FRAME_HEADER_IDX_SYNC_HIGH    = 0,
+        FRAME_HEADER_IDX_SYNC_LOW        ,
+        FRAME_HEADER_IDX_MESSAGE_ID      ,
+        FRAME_HEADER_IDX_MESSAGE_SIZE    ,
+        FRAME_HEADER_SIZE                ,
+        FRAME_HEADER_IDX_DATA         = FRAME_HEADER_SIZE,
+    } FrameHeaderIndex;
 
     typedef enum
     {
-        DATA_FRAME_MAX_BUFFER_SIZE  = 255,
-    } DataFrameConsts;
+        MAX_PAYLOAD_SIZE  = 255,
+    } PayloadConsts;
     
     typedef enum
     {
-        MESSAGE_FRAME_SIZE         = DATA_FRAME_MAX_BUFFER_SIZE + MESSAGE_FRAME_HEADER_SIZE,
-        MESSAGE_FRAME_SYNC_HIGH    = 0xAB,
-        MESSAGE_FRAME_SYNC_LOW     = 0xCD,
+        FRAME_SIZE         = MAX_PAYLOAD_SIZE + FRAME_HEADER_SIZE,
+        FRAME_SYNC_HIGH    = 0xAB,
+        FRAME_SYNC_LOW     = 0xCD,
 
-    } MessageFrameConsts;
-
+    } FrameConsts;
 
 }
 
