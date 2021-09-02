@@ -3,10 +3,10 @@ namespace Needmon
     class Packet
     {
         public:
-        Packet() = default;
-        ~Packet() = default;
+        Packet() {};
+        ~Packet() {};
 
-        virtual void Encode();
-        virtual void Decode();
+        virtual void Encode() {};
+        virtual void Decode() {};
     };
 }
