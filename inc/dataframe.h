@@ -4,17 +4,10 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <typeinfo>
+#include "consts.h"
 
 namespace Needmon
 {
-    typedef enum
-    {
-        DATA_FRAME_MAX_BUFFER_SIZE  = 255,
-    } DataFrameConsts;
-
-    typedef float  float32_t;
-    typedef double float64_t;
-
     typedef union
     {
         uint8_t    ucData      ;
@@ -57,8 +50,6 @@ namespace Needmon
         void Read( int64_t   &returnBuffer );
         void Read( float32_t &returnBuffer );
         void Read( float64_t &returnBuffer );
-
-
 
         protected:
         uint16_t dataFrameWriteIdx;

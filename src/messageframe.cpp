@@ -16,30 +16,30 @@ namespace Needmon
         messageID = _messageID;
     }
 
-    void MessageFrame::Serialize( uint8_t *buffer )
+    void MessageFrame::Serialize( DataBuffer &buffer )
     {
         _messageSize = GetDataCount();
 
         uint16_t dataFrameIdx = MESSAGE_FRAME_HEADER_IDX_DATA;
 
-        buffer[ MESSAGE_FRAME_HEADER_IDX_SYNC_HIGH ]    = _syncHigh   ;
-        buffer[ MESSAGE_FRAME_HEADER_IDX_SYNC_LOW ]     = _syncLow    ;
-        buffer[ MESSAGE_FRAME_HEADER_IDX_MESSAGE_ID ]   = _messageID  ;
-        buffer[ MESSAGE_FRAME_HEADER_IDX_MESSAGE_SIZE ] = _messageSize;
+        buffer.buffer[ MESSAGE_FRAME_HEADER_IDX_SYNC_HIGH ]    = _syncHigh   ;
+        buffer.buffer[ MESSAGE_FRAME_HEADER_IDX_SYNC_LOW ]     = _syncLow    ;
+        buffer.buffer[ MESSAGE_FRAME_HEADER_IDX_MESSAGE_ID ]   = _messageID  ;
+        buffer.buffer[ MESSAGE_FRAME_HEADER_IDX_MESSAGE_SIZE ] = _messageSize;
         
         while( dataFrameIdx - MESSAGE_FRAME_HEADER_IDX_DATA < dataFrameWriteIdx )
         {
-            buffer[ dataFrameIdx ] = dataFrameBuffer[ dataFrameIdx - MESSAGE_FRAME_HEADER_IDX_DATA ];
+            buffer.buffer[ dataFrameIdx ] = dataFrameBuffer[ dataFrameIdx - MESSAGE_FRAME_HEADER_IDX_DATA ];
             dataFrameIdx++;
         }
     }
 
-    void MessageFrame::Parse( uint8_t *buffer )
+    void MessageFrame::Parse( DataBuffer &buffer )
     {
-        _syncHigh    = buffer[ MESSAGE_FRAME_HEADER_IDX_SYNC_HIGH ]    ;
-        _syncLow     = buffer[ MESSAGE_FRAME_HEADER_IDX_SYNC_LOW ]     ;
-        _messageID   = buffer[ MESSAGE_FRAME_HEADER_IDX_MESSAGE_ID ]   ;
-        _messageSize = buffer[ MESSAGE_FRAME_HEADER_IDX_MESSAGE_SIZE ] ;
+        _syncHigh    = buffer.buffer[ MESSAGE_FRAME_HEADER_IDX_SYNC_HIGH ]    ;
+        _syncLow     = buffer.buffer[ MESSAGE_FRAME_HEADER_IDX_SYNC_LOW ]     ;
+        _messageID   = buffer.buffer[ MESSAGE_FRAME_HEADER_IDX_MESSAGE_ID ]   ;
+        _messageSize = buffer.buffer[ MESSAGE_FRAME_HEADER_IDX_MESSAGE_SIZE ] ;
 
         SetDataCount( _messageSize );
 
@@ -47,7 +47,7 @@ namespace Needmon
 
         while( dataFrameIdx - MESSAGE_FRAME_HEADER_IDX_DATA < dataFrameWriteIdx )
         {
-            dataFrameBuffer[ dataFrameIdx - MESSAGE_FRAME_HEADER_IDX_DATA ] = buffer[ dataFrameIdx ];
+            dataFrameBuffer[ dataFrameIdx - MESSAGE_FRAME_HEADER_IDX_DATA ] = buffer.buffer[ dataFrameIdx ];
             dataFrameIdx++;
         }
 
