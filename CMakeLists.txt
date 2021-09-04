@@ -6,3 +6,4 @@ add_library(needmon ${SOURCES})
 target_include_directories(needmon PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/inc)
 
+target_link_libraries(needmon PUBLIC osal)

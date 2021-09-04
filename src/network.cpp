@@ -1,66 +1,109 @@
+#include "network.h"
+#include "osal.h"
 
-namespace Needmon
+using namespace Needmon;
+using namespace OSAL;
+
+Ethernet::Ethernet(const char* ipAddress, int portNo)
 {
-    class Connection
+    m_ipAddress = const_cast<char*>(ipAddress);
+    m_portNo    = portNo; 
+    m_host      = (Socket::host_t*)gethostbyname(ipAddress);
+
+    m_serverSocketAddress = Socket::address_in_init_by_name( m_host, m_portNo );
+    m_serverLen           = sizeof(*m_serverSocketAddress);
+
+}
+
+Server::Server(Ethernet* ethernet)
+{
+    m_ethernet = ethernet;
+    m_clientSocketAddress = static_cast<Socket::address_in_t*>(OS::memAllocate(sizeof(Socket::address_in_t)));
+    m_clientSocketLen     = sizeof(*m_clientSocketAddress);
+}
+
+int Server::Connect()
+{
+    int result = true;
+
+    if( Socket::_bind( m_ethernet->m_serverSocket,
+        (Socket::address_t*)(m_ethernet->m_serverSocketAddress),
+        m_ethernet->m_serverLen) < 0 )
     {
-        public:
-        virtual ~Connection() {};
+        OS::display("[SERVER] Controller server connection error! ");
+        result = false;
+    } else {}
 
-        virtual int Connect() = 0;
-    };
+    return result;
+}
 
-    class TCPConnectionBase
+int Server::Process()
+{
+    int result = true;
+
+    uint8_t buffer[1024];
+
+    if( Socket::_listen( m_ethernet->m_serverSocket ) < 0 )
     {
-        public:
-        ~TCPConnectionBase() {};
+        OS::display("[SERVER] Controller server listening error! ");
+        result = false;
+    } else {}
 
-        int TCPConnectionConnect();
-    };
+    OS::display("[SERVER] Controller server is accepting! ");
 
-    class TCPConnection : public Connection , private TCPConnectionBase
+    m_clientSocket = Socket::_accept( m_ethernet->m_serverSocket,
+                    (Socket::address_t*)(m_clientSocketAddress),
+                    &m_clientSocketLen );
+
+    OS::display("[SERVER] Controller server is accepted! ");
+
+    while ( result == true )
     {
-        public:
-        ~TCPConnection() {};
+        Socket::_read( m_clientSocket, buffer, 1024);
 
-        virtual int Connect();
-    };
-
-    class UDPConnectionBase
-    {
-        public:
-        ~UDPConnectionBase() {};
-
-        int UDPConnectionConnect();
-    };
-
-    class UDPConnection : public Connection , private UDPConnectionBase
-    {
-        public:
-        ~UDPConnection() {};
-
-        virtual int Connect();
-    };
-
-    /** --------------------------------------------- */
-
-    int TCPConnectionBase::TCPConnectionConnect()
-    {
-        return 1;
+        if( m_receiveHandler != nullptr )
+        {
+            m_receiveHandler(buffer, 1024);
+        } else {}
     }
 
-    int UDPConnectionBase::UDPConnectionConnect()
+    Socket::_close( m_clientSocket );
+
+    return result;
+}
+
+Client::Client(Ethernet* ethernet)
+{
+    m_ethernet = ethernet;
+}
+
+int Client::Connect()
+{
+    int result = true;
+
+    if( Socket::_connect( m_ethernet->m_serverSocket,
+        m_ethernet->m_serverSocketAddress) < 0 )
     {
-        return 2;
+        OS::display("[CLIENT] Controller client connection error! ");
+        result = false;
+    } else {}
+
+    return result;
+}
+
+int Client::Process()
+{
+    int result = true;
+
+    while ( result == true )
+    {
+        uint8_t buffer[1024];
+
+        buffer[0] = 0x12;
+
+        Socket::_write(m_ethernet->m_serverSocket, buffer, 1024 );
+        
     }
 
-    int TCPConnection::Connect()
-    {
-        return TCPConnectionConnect();
-    }
-
-    int UDPConnection::Connect()
-    {
-        return UDPConnectionConnect();
-    }
-
+    return result;
 }
