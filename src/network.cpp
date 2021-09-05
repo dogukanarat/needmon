@@ -34,15 +34,15 @@ ErrorNo Server::Connect()
 {
     ErrorNo result = true;
 
-    int errno = 0;
+    int errNo = 0;
 
-    errno = Socket::_bind( m_ethernet->m_serverSocket,
+    errNo = Socket::_bind( m_ethernet->m_serverSocket,
             (Socket::address_t*)(m_ethernet->m_serverSocketAddress),
             m_ethernet->m_serverLen);
 
-    if( errno < 0 )
+    if( errNo < 0 )
     {
-        OS::print("[SERVER] Controller server connection error! (errno: %d)\n", errno);
+        OS::print("[SERVER] Controller server connection error! (errno: %d)\n", errNo);
         result = false;
     } else {}
 
@@ -53,13 +53,13 @@ ErrorNo Server::Process()
 {
     ErrorNo result = true;
 
-    int errno = 0;
+    int errNo = 0;
 
-    errno = Socket::_listen( m_ethernet->m_serverSocket );
+    errNo = Socket::_listen( m_ethernet->m_serverSocket );
 
-    if( errno < 0 )
+    if( errNo < 0 )
     {
-        OS::print("[SERVER] Controller server listening error! (errno: %d)\n", errno);
+        OS::print("[SERVER] Controller server listening error! (errno: %d)\n", errNo);
         result = false;
     }
     else
@@ -122,13 +122,15 @@ ErrorNo Client::Connect()
 
     OS::print("[CLIENT] Connecting...\n");
 
-    int errno = Socket::_connect( m_ethernet->m_serverSocket, m_ethernet->m_serverSocketAddress);
+    int errNo = 0;
+    
+    errNo = Socket::_connect( m_ethernet->m_serverSocket, m_ethernet->m_serverSocketAddress);
 
-    OS::print("[CLIENT] (errno: %d)\n", errno);
+    OS::print("[CLIENT] (errno: %d)\n", errNo);
 
-    if( errno < 0 )
+    if( errNo < 0 )
     {
-        OS::print("[CLIENT] Controller client connection error! (errno: %d)", errno);
+        OS::print("[CLIENT] Controller client connection error! (errno: %d)", errNo);
         result = false;
     } else {}
 
