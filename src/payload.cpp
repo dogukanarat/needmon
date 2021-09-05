@@ -15,8 +15,10 @@ void Payload::WriteToBuffer( byteConnector_t &converter, uint8_t byteCount )
 
     while( idx < byteCount )
     {
-        serialBuffer[ writeIdx++ ] = converter.ucBytes[ idx++ ];
+        m_payloadBuffer[ m_writeIndex++ ] = converter.ucBytes[ idx++ ];
     }
+
+    m_dataCount = m_writeIndex;
 }
 /**
  * @brief 
@@ -30,7 +32,7 @@ void Payload::ReadFromBuffer( byteConnector_t &converter, uint8_t byteCount )
 
     while( idx < byteCount )
     {
-        converter.ucBytes[ idx++ ] = serialBuffer[ readIdx++ ];
+        converter.ucBytes[ idx++ ] = m_payloadBuffer[ m_readIndex++ ];
     }
 }
 
@@ -314,12 +316,19 @@ void Payload::Read( float64_t &returnBuffer )
     returnBuffer = convertor.dData;  
 }
 
-uint32_t Payload::GetDataCount( )
+void Payload::GetDataCount( uint8_t& dataCount )
 {
-    return writeIdx;
+    dataCount = m_dataCount;
 }
 
-void Payload::SetDataCount( uint32_t dataCount )
+void Payload::SetDataCount( uint8_t& dataCount )
 {
-    writeIdx = dataCount;
+    m_dataCount = dataCount;
+    m_writeIndex = m_dataCount;
+}
+
+void Payload::ResetBuffer()
+{
+    m_writeIndex = 0;
+    m_readIndex = 0;
 }

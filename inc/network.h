@@ -1,20 +1,27 @@
 
 #include "stdint.h"
 #include "os_socket.h"
+#include "buffer.h"
 
 namespace Needmon
 {
+    typedef int ErrorNo;
+    
     class Communication
     {
         public:
-        virtual int SetHandler(void (*receiveHandler)(uint8_t*,uint32_t)) { m_receiveHandler = receiveHandler; return true; };
-        virtual int Connect() = 0;
-        virtual int Process() = 0;
+
+        virtual ErrorNo SetHandler(void (*receiveHandler)(uint8_t*,uint32_t)) { m_receiveHandler = receiveHandler; return true; };
+        virtual ErrorNo Connect() = 0;
+        virtual ErrorNo Process() = 0;
+        virtual ErrorNo Read(Buffer& buffer) = 0;
+        virtual ErrorNo Write(Buffer& buffer) = 0;
 
         protected:
         Communication() {};
         virtual ~Communication() {};
 
+        Buffer m_buffer;
         void (*m_receiveHandler)(uint8_t*,uint32_t) = nullptr;
     };
 
@@ -60,15 +67,17 @@ namespace Needmon
     {
         public:
         Server(Ethernet* ethernet);
-        ~Server() {};
+        ~Server();
 
         OSAL::Socket::address_in_t* m_clientSocketAddress = nullptr;
         OSAL::Socket::length_t m_clientSocketLen;
         int m_clientSocket;
         Ethernet* m_ethernet;
 
-        int Connect() override;
-        int Process() override;
+        ErrorNo Connect() override;
+        ErrorNo Process() override;
+        ErrorNo Read(Buffer& buffer) override;
+        ErrorNo Write(Buffer& buffer) override;
     };
 
     class Client : public Communication
@@ -79,8 +88,10 @@ namespace Needmon
 
         Ethernet* m_ethernet;
 
-        int Connect() override;
-        int Process() override;
+        ErrorNo Connect() override;
+        ErrorNo Process() override;
+        ErrorNo Read(Buffer& buffer) override;
+        ErrorNo Write(Buffer& buffer) override;
     };
 
 

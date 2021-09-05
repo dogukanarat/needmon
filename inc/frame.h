@@ -10,7 +10,10 @@ namespace Needmon
     class Frame : public Payload
     {
         public:
-        Frame() {};
+        Frame()
+        : m_syncHigh(FRAME_SYNC_HIGH)
+        , m_syncLow(FRAME_SYNC_LOW)
+        {};
         ~Frame() {};
 
         void SetMessageId( uint8_t& messageId );
@@ -18,7 +21,8 @@ namespace Needmon
 
         void Serialize( Buffer& buffer );
         void Parse( Buffer& buffer );
-
+        void Reset();
+        
         private:
         uint8_t m_messageId  ;
         uint8_t m_messageSize;

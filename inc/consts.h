@@ -13,7 +13,6 @@ namespace Needmon
         FRAME_HEADER_IDX_MESSAGE_ID      ,
         FRAME_HEADER_IDX_MESSAGE_SIZE    ,
         FRAME_HEADER_SIZE                ,
-        FRAME_HEADER_IDX_DATA         = FRAME_HEADER_SIZE,
     } FrameHeaderIndex;
 
     typedef enum

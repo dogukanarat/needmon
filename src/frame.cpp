@@ -14,41 +14,44 @@ void Frame::GetMessageId( uint8_t& messageId )
 
 void Frame::Serialize( Buffer& buffer )
 {
-    m_messageSize = GetDataCount();
+    uint16_t payloadIdx = 0;
 
-    uint16_t dataFrameIdx = FRAME_HEADER_IDX_DATA;
+    GetDataCount(m_messageSize);
 
-    uint8_t* tempBuffer = buffer.GetBuffer();
+    buffer.Set(FRAME_HEADER_IDX_SYNC_HIGH    , m_syncHigh    );
+    buffer.Set(FRAME_HEADER_IDX_SYNC_LOW     , m_syncLow     );
+    buffer.Set(FRAME_HEADER_IDX_MESSAGE_ID   , m_messageId   );
+    buffer.Set(FRAME_HEADER_IDX_MESSAGE_SIZE , m_messageSize );
 
-    tempBuffer[ FRAME_HEADER_IDX_SYNC_HIGH ]    = m_syncHigh   ;
-    tempBuffer[ FRAME_HEADER_IDX_SYNC_LOW ]     = m_syncLow    ;
-    tempBuffer[ FRAME_HEADER_IDX_MESSAGE_ID ]   = m_messageId  ;
-    tempBuffer[ FRAME_HEADER_IDX_MESSAGE_SIZE ] = m_messageSize;
-    
-    while( dataFrameIdx - FRAME_HEADER_IDX_DATA < writeIdx )
+    while( payloadIdx < m_messageSize )
     {
-        tempBuffer[ dataFrameIdx ] = serialBuffer[ dataFrameIdx - FRAME_HEADER_IDX_DATA ];
-        dataFrameIdx++;
+        buffer.Set(FRAME_HEADER_SIZE + payloadIdx, m_payloadBuffer[payloadIdx] );
+        payloadIdx++;
     }
 }
 
-void Frame::Parse( Buffer &buffer )
+void Frame::Parse( Buffer& buffer )
 {
-    uint8_t* tempBuffer = buffer.GetBuffer();
-
-    m_syncHigh    = tempBuffer[ FRAME_HEADER_IDX_SYNC_HIGH ]    ;
-    m_syncLow     = tempBuffer[ FRAME_HEADER_IDX_SYNC_LOW ]     ;
-    m_messageId   = tempBuffer[ FRAME_HEADER_IDX_MESSAGE_ID ]   ;
-    m_messageSize = tempBuffer[ FRAME_HEADER_IDX_MESSAGE_SIZE ] ;
+    uint16_t payloadIdx = 0;
+    
+    buffer.Get(FRAME_HEADER_IDX_SYNC_HIGH    , m_syncHigh    );
+    buffer.Get(FRAME_HEADER_IDX_SYNC_LOW     , m_syncLow     );
+    buffer.Get(FRAME_HEADER_IDX_MESSAGE_ID   , m_messageId   );
+    buffer.Get(FRAME_HEADER_IDX_MESSAGE_SIZE , m_dataCount   );
 
     SetDataCount( m_messageSize );
 
-    uint16_t dataFrameIdx = FRAME_HEADER_IDX_DATA;
-
-    while( dataFrameIdx - FRAME_HEADER_IDX_DATA < writeIdx )
+    while( payloadIdx < m_messageSize )
     {
-        serialBuffer[ dataFrameIdx - FRAME_HEADER_IDX_DATA ] = tempBuffer[ dataFrameIdx ];
-        dataFrameIdx++;
+        buffer.Get(FRAME_HEADER_SIZE + payloadIdx, m_payloadBuffer[payloadIdx] );
+        payloadIdx++; 
     }
 
+}
+
+void Frame::Reset()
+{
+    m_writeIndex  = 0;
+    m_readIndex   = 0;
+    m_dataCount   = 0;
 }

@@ -26,7 +26,10 @@ namespace Needmon
     class Payload
     {
         public:
-        Payload() : writeIdx(0), readIdx(0) {};
+        Payload()
+        : m_writeIndex(0)
+        , m_readIndex(0)
+        {};
         ~Payload() {};
 
         void Write( uint8_t   &data );
@@ -52,13 +55,14 @@ namespace Needmon
         void Read( float64_t &returnBuffer );
 
         protected:
-        uint16_t writeIdx;
-        uint16_t readIdx;
-        uint8_t  serialBuffer[ MAX_PAYLOAD_SIZE ];
+        uint8_t m_writeIndex;
+        uint8_t m_readIndex;
+        uint8_t m_dataCount;
+        uint8_t  m_payloadBuffer[MAX_PAYLOAD_SIZE];
 
-        uint32_t GetDataCount();
-        void     SetDataCount( uint32_t dataCount );
-
+        void GetDataCount( uint8_t& dataCount );
+        void SetDataCount( uint8_t& dataCount );
+        void ResetBuffer();     
         void WriteToBuffer( byteConnector_t &converter, uint8_t byteCount );
         void ReadFromBuffer( byteConnector_t &converter, uint8_t byteCount );
     };

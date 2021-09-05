@@ -22,52 +22,91 @@ Server::Server(Ethernet* ethernet)
     m_clientSocketLen     = sizeof(*m_clientSocketAddress);
 }
 
-int Server::Connect()
+Server::~Server()
 {
-    int result = true;
-
-    if( Socket::_bind( m_ethernet->m_serverSocket,
-        (Socket::address_t*)(m_ethernet->m_serverSocketAddress),
-        m_ethernet->m_serverLen) < 0 )
+    if( m_clientSocket != 0 )
     {
-        OS::display("[SERVER] Controller server connection error! ");
+        Socket::_close( m_clientSocket );
+    } else {}
+}
+
+ErrorNo Server::Connect()
+{
+    ErrorNo result = true;
+
+    int errno = 0;
+
+    errno = Socket::_bind( m_ethernet->m_serverSocket,
+            (Socket::address_t*)(m_ethernet->m_serverSocketAddress),
+            m_ethernet->m_serverLen);
+
+    if( errno < 0 )
+    {
+        OS::print("[SERVER] Controller server connection error! (errno: %d)\n", errno);
         result = false;
     } else {}
 
     return result;
 }
 
-int Server::Process()
+ErrorNo Server::Process()
 {
-    int result = true;
+    ErrorNo result = true;
 
-    uint8_t buffer[1024];
+    int errno = 0;
 
-    if( Socket::_listen( m_ethernet->m_serverSocket ) < 0 )
+    errno = Socket::_listen( m_ethernet->m_serverSocket );
+
+    if( errno < 0 )
     {
-        OS::display("[SERVER] Controller server listening error! ");
+        OS::print("[SERVER] Controller server listening error! (errno: %d)\n", errno);
         result = false;
-    } else {}
-
-    OS::display("[SERVER] Controller server is accepting! ");
-
-    m_clientSocket = Socket::_accept( m_ethernet->m_serverSocket,
-                    (Socket::address_t*)(m_clientSocketAddress),
-                    &m_clientSocketLen );
-
-    OS::display("[SERVER] Controller server is accepted! ");
-
-    while ( result == true )
+    }
+    else
     {
-        Socket::_read( m_clientSocket, buffer, 1024);
-
-        if( m_receiveHandler != nullptr )
+        m_clientSocket = Socket::_accept( m_ethernet->m_serverSocket,
+                        (Socket::address_t*)(m_clientSocketAddress),
+                        &m_clientSocketLen );
+        
+        if( m_clientSocket != 0 )
         {
-            m_receiveHandler(buffer, 1024);
-        } else {}
+            result = true;
+        }
     }
 
-    Socket::_close( m_clientSocket );
+    return result;
+}
+
+ErrorNo Server::Read(Buffer& buffer)
+{
+    ErrorNo result = false;
+
+    if(m_clientSocket != 0)
+    {
+        uint32_t size = 0;
+        size = Socket::_read( m_clientSocket, buffer.GetAddress(), buffer.GetSize());
+        if( size > 0)
+        {
+            result = true;
+        } else {}
+    } else {}
+
+    return result;
+}
+
+ErrorNo Server::Write(Buffer& buffer)
+{
+    ErrorNo result = false;
+
+    if(m_clientSocket != 0)
+    {
+        uint32_t size = 0;
+        size = Socket::_write( m_clientSocket, buffer.GetAddress(), buffer.GetSize());
+        if( size > 0)
+        {
+            result = true;
+        } else {}
+    } else {}
 
     return result;
 }
@@ -77,33 +116,61 @@ Client::Client(Ethernet* ethernet)
     m_ethernet = ethernet;
 }
 
-int Client::Connect()
+ErrorNo Client::Connect()
 {
     int result = true;
 
-    if( Socket::_connect( m_ethernet->m_serverSocket,
-        m_ethernet->m_serverSocketAddress) < 0 )
+    OS::print("[CLIENT] Connecting...\n");
+
+    int errno = Socket::_connect( m_ethernet->m_serverSocket, m_ethernet->m_serverSocketAddress);
+
+    OS::print("[CLIENT] (errno: %d)\n", errno);
+
+    if( errno < 0 )
     {
-        OS::display("[CLIENT] Controller client connection error! ");
+        OS::print("[CLIENT] Controller client connection error! (errno: %d)", errno);
         result = false;
     } else {}
 
     return result;
 }
 
-int Client::Process()
+ErrorNo Client::Process()
 {
-    int result = true;
+    ErrorNo result = true;
+    return result;
+}
 
-    while ( result == true )
+ErrorNo Client::Read(Buffer& buffer)
+{
+    ErrorNo result = false;
+    if(m_ethernet->m_serverSocket != 0)
     {
-        uint8_t buffer[1024];
+        uint32_t size = 0;
+        size = result = Socket::_read( m_ethernet->m_serverSocket, buffer.GetAddress(), buffer.GetSize());
+        if( size > 0)
+        {
+            result = true;
+        } else {}
+    } else {}
 
-        buffer[0] = 0x12;
+    return result;
+}
 
-        Socket::_write(m_ethernet->m_serverSocket, buffer, 1024 );
-        
-    }
+ErrorNo Client::Write(Buffer& buffer)
+{
+    ErrorNo result = false;
+
+    if(m_ethernet->m_serverSocket != 0)
+    {
+        uint32_t size = 0;
+        size = Socket::_write( m_ethernet->m_serverSocket, buffer.GetAddress(), buffer.GetSize());
+
+        if( size > 0)
+        {
+            result = true;
+        } else {}
+    } else {}
 
     return result;
 }
