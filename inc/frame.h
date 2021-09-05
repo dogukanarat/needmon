@@ -21,7 +21,8 @@ namespace Needmon
 
         void Serialize( Buffer& buffer );
         void Parse( Buffer& buffer );
-        void Reset();
+        void EncodeReset();
+        void DecodeReset();
         
         private:
         uint8_t m_messageId  ;

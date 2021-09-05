@@ -37,7 +37,7 @@ void Frame::Parse( Buffer& buffer )
     buffer.Get(FRAME_HEADER_IDX_SYNC_HIGH    , m_syncHigh    );
     buffer.Get(FRAME_HEADER_IDX_SYNC_LOW     , m_syncLow     );
     buffer.Get(FRAME_HEADER_IDX_MESSAGE_ID   , m_messageId   );
-    buffer.Get(FRAME_HEADER_IDX_MESSAGE_SIZE , m_dataCount   );
+    buffer.Get(FRAME_HEADER_IDX_MESSAGE_SIZE , m_messageSize );
 
     SetDataCount( m_messageSize );
 
@@ -49,9 +49,14 @@ void Frame::Parse( Buffer& buffer )
 
 }
 
-void Frame::Reset()
+void Frame::EncodeReset()
 {
     m_writeIndex  = 0;
     m_readIndex   = 0;
     m_dataCount   = 0;
+}
+
+void Frame::DecodeReset()
+{
+    m_readIndex   = 0;
 }
