@@ -16,7 +16,7 @@ void Frame::Serialize( Buffer& buffer )
 {
     uint16_t payloadIdx = 0;
 
-    GetDataCount(m_messageSize);
+    m_payload.GetDataCount(m_messageSize);
 
     buffer.Set(FRAME_HEADER_IDX_SYNC_HIGH    , m_syncHigh    );
     buffer.Set(FRAME_HEADER_IDX_SYNC_LOW     , m_syncLow     );
@@ -25,7 +25,7 @@ void Frame::Serialize( Buffer& buffer )
 
     while( payloadIdx < m_messageSize )
     {
-        buffer.Set(FRAME_HEADER_SIZE + payloadIdx, m_payloadBuffer[payloadIdx] );
+        buffer.Set(FRAME_HEADER_SIZE + payloadIdx, m_payload.m_payloadBuffer[payloadIdx] );
         payloadIdx++;
     }
 }
@@ -39,11 +39,11 @@ void Frame::Parse( Buffer& buffer )
     buffer.Get(FRAME_HEADER_IDX_MESSAGE_ID   , m_messageId   );
     buffer.Get(FRAME_HEADER_IDX_MESSAGE_SIZE , m_messageSize );
 
-    SetDataCount( m_messageSize );
+    m_payload.SetDataCount( m_messageSize );
 
     while( payloadIdx < m_messageSize )
     {
-        buffer.Get(FRAME_HEADER_SIZE + payloadIdx, m_payloadBuffer[payloadIdx] );
+        buffer.Get(FRAME_HEADER_SIZE + payloadIdx, m_payload.m_payloadBuffer[payloadIdx] );
         payloadIdx++; 
     }
 
@@ -51,12 +51,20 @@ void Frame::Parse( Buffer& buffer )
 
 void Frame::EncodeReset()
 {
-    m_writeIndex  = 0;
-    m_readIndex   = 0;
-    m_dataCount   = 0;
+
 }
 
 void Frame::DecodeReset()
 {
-    m_readIndex   = 0;
+    
+}
+
+void Frame::Encode(Packet& packet)
+{
+    packet.Encode(m_payload);
+}
+
+void Frame::Decode(Packet& packet)
+{
+    packet.Decode(m_payload);
 }

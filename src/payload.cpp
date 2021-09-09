@@ -327,8 +327,20 @@ void Payload::SetDataCount( uint8_t& dataCount )
     m_writeIndex = m_dataCount;
 }
 
-void Payload::ResetBuffer()
+void Payload::Reset()
 {
     m_writeIndex = 0;
     m_readIndex = 0;
+}
+
+void Payload::EncodeReset()
+{
+    m_writeIndex  = 0;
+    m_readIndex   = 0;
+    m_dataCount   = 0;
+}
+
+void Payload::DecodeReset()
+{
+    m_readIndex   = 0;
 }
