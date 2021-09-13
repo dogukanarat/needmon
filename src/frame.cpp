@@ -68,3 +68,10 @@ void Frame::Decode(Packet& packet)
 {
     packet.Decode(m_payload);
 }
+
+Frame operator << (Packet& packet ,Frame& frame)
+{
+    frame.Decode( packet );
+    return frame;
+
+}
