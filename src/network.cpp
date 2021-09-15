@@ -4,6 +4,8 @@
 using namespace Needmon;
 using namespace OSAL;
 
+//#define PRINT_ERRORS
+
 Ethernet::Ethernet(const char* ipAddress, int portNo)
 {
     m_ipAddress = const_cast<char*>(ipAddress);
@@ -42,7 +44,9 @@ ErrorNo Server::Connect()
 
     if( errNo < 0 )
     {
+        #ifdef PRINT_ERRORS
         OS::print("[SERVER] Controller server connection error! (errno: %d)\n", errNo);
+        #endif
         result = false;
     } else {}
 
@@ -59,7 +63,9 @@ ErrorNo Server::Process()
 
     if( errNo < 0 )
     {
+        #ifdef PRINT_ERRORS
         OS::print("[SERVER] Controller server listening error! (errno: %d)\n", errNo);
+        #endif
         result = false;
     }
     else
@@ -72,6 +78,10 @@ ErrorNo Server::Process()
         {
             result = true;
         }
+        else
+        {
+            result = false;
+        }
     }
 
     return result;
@@ -83,12 +93,16 @@ ErrorNo Server::Read(Buffer& buffer)
 
     if(m_clientSocket != 0)
     {
-        uint32_t size = 0;
+        int32_t size = 0;
         size = Socket::_read( m_clientSocket, buffer.GetAddress(), buffer.GetSize());
         if( size > 0)
         {
             result = true;
-        } else {}
+        } 
+        else
+        {
+            result = false;  
+        }
     } else {}
 
     return result;
@@ -100,12 +114,18 @@ ErrorNo Server::Write(Buffer& buffer)
 
     if(m_clientSocket != 0)
     {
-        uint32_t size = 0;
+        int32_t size = 0;
+
         size = Socket::_write( m_clientSocket, buffer.GetAddress(), buffer.GetSize());
+
         if( size > 0)
         {
             result = true;
-        } else {}
+        } 
+        else
+        {
+            result = false;
+        }
     } else {}
 
     return result;
@@ -120,19 +140,18 @@ ErrorNo Client::Connect()
 {
     int result = true;
 
-    OS::print("[CLIENT] Connecting...\n");
-
-    int errNo = 0;
+    int32_t errNo = 0;
     
     errNo = Socket::_connect( m_ethernet->m_serverSocket, m_ethernet->m_serverSocketAddress);
 
-    OS::print("[CLIENT] (errno: %d)\n", errNo);
-
     if( errNo < 0 )
     {
-        OS::print("[CLIENT] Controller client connection error! (errno: %d)", errNo);
         result = false;
-    } else {}
+    }
+    else
+    {
+        result = true;
+    }
 
     return result;
 }
@@ -140,20 +159,28 @@ ErrorNo Client::Connect()
 ErrorNo Client::Process()
 {
     ErrorNo result = true;
+
     return result;
 }
 
 ErrorNo Client::Read(Buffer& buffer)
 {
     ErrorNo result = false;
-    if(m_ethernet->m_serverSocket != 0)
+
+    if( m_ethernet->m_serverSocket != 0 )
     {
-        uint32_t size = 0;
+        int32_t size = 0;
+
         size = result = Socket::_read( m_ethernet->m_serverSocket, buffer.GetAddress(), buffer.GetSize());
+
         if( size > 0)
         {
             result = true;
-        } else {}
+        }
+        else
+        {
+            result = false;
+        }
     } else {}
 
     return result;
@@ -163,15 +190,20 @@ ErrorNo Client::Write(Buffer& buffer)
 {
     ErrorNo result = false;
 
-    if(m_ethernet->m_serverSocket != 0)
+    if( m_ethernet->m_serverSocket != 0 )
     {
-        uint32_t size = 0;
+        int32_t size = 0;
+
         size = Socket::_write( m_ethernet->m_serverSocket, buffer.GetAddress(), buffer.GetSize());
 
         if( size > 0)
         {
             result = true;
-        } else {}
+        }
+        else
+        {
+            result = false;
+        }
     } else {}
 
     return result;
