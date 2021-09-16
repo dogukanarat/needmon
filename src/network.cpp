@@ -35,8 +35,7 @@ Server::~Server()
 ErrorNo Server::Connect()
 {
     ErrorNo result = true;
-
-    int errNo = 0;
+    int32_t errNo = 0;
 
     errNo = Socket::_bind( m_ethernet->m_serverSocket,
             (Socket::address_t*)(m_ethernet->m_serverSocketAddress),
@@ -48,7 +47,12 @@ ErrorNo Server::Connect()
         OS::print("[SERVER] Controller server connection error! (errno: %d)\n", errNo);
         #endif
         result = false;
-    } else {}
+    }
+    else
+    {
+        result = true;
+    }
+
 
     return result;
 }
@@ -56,33 +60,44 @@ ErrorNo Server::Connect()
 ErrorNo Server::Process()
 {
     ErrorNo result = true;
+    int32_t errNo = 0;
 
-    int errNo = 0;
-
-    errNo = Socket::_listen( m_ethernet->m_serverSocket );
-
-    if( errNo < 0 )
+    if( m_ethernet->m_protocol == ETHERNET_TCP )
     {
-        #ifdef PRINT_ERRORS
-        OS::print("[SERVER] Controller server listening error! (errno: %d)\n", errNo);
-        #endif
-        result = false;
-    }
-    else
-    {
-        m_clientSocket = Socket::_accept( m_ethernet->m_serverSocket,
-                        (Socket::address_t*)(m_clientSocketAddress),
-                        &m_clientSocketLen );
-        
-        if( m_clientSocket != 0 )
+        errNo = Socket::_listen( m_ethernet->m_serverSocket );
+
+        if( errNo < 0 )
         {
-            result = true;
+            #ifdef PRINT_ERRORS
+            OS::print("[SERVER] Controller server listening error! (errno: %d)\n", errNo);
+            #endif
+            result = false;
         }
         else
         {
-            result = false;
+            m_clientSocket = Socket::_accept( m_ethernet->m_serverSocket,
+                            (Socket::address_t*)(m_clientSocketAddress),
+                            &m_clientSocketLen );
+            
+            if( m_clientSocket != 0 )
+            {
+                result = true;
+            }
+            else
+            {
+                result = false;
+            }
         }
     }
+    else if( m_ethernet->m_protocol == ETHERNET_UDP )
+    {
+
+    }
+    else
+    {
+
+    }
+ 
 
     return result;
 }
@@ -103,7 +118,11 @@ ErrorNo Server::Read(Buffer& buffer)
         {
             result = false;  
         }
-    } else {}
+    }
+    else
+    {
+        
+    }
 
     return result;
 }
