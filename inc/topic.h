@@ -2,6 +2,10 @@
 #define _NEEDMON_TOPIC_H
 
 #include <list>
+#include "types.h"
+#include "message.h"
+#include <thread>
+#include <mutex>
 
 namespace Needmon
 {
@@ -11,11 +15,12 @@ namespace Needmon
         Topic(){};
         ~Topic(){};
 
-        void Publish(){};
-        void Subscribe(){};
+        void Publish(Message &message);
+        void Subscribe(void (*callback)(Message &));
 
     protected:
-        std::list<void()> m_callbacks;
-    }
+        mutable std::mutex m_mutex;
+        std::list<void (*)(Message &)> m_callbacks;
+    };
 }
 #endif
