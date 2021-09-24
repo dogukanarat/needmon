@@ -1,71 +1,69 @@
-#ifndef _NEEDMON_PAYLOAD_HPP
-#define _NEEDMON_PAYLOAD_HPP
+#ifndef _NEEDMON_PAYLOAD_H
+#define _NEEDMON_PAYLOAD_H
 
-#include <stdint.h>
 #include <stdlib.h>
 #include <typeinfo>
+#include "types.h"
 #include "consts.h"
 
 namespace Needmon
 {
     typedef union
     {
-        uint8_t    ucData      ;
-        uint16_t   usData      ;
-        uint32_t   ulData      ;
-        uint64_t   ullData     ;
-        float32_t  fData       ;
-        float64_t  dData       ;
-        int8_t     cData       ;
-        int16_t    sData       ;
-        int32_t    lData       ;
-        int64_t    llData      ;
-        uint8_t    ucBytes[8]  ;
-    } byteConnector_t;
+        UInt8 ucData;
+        UInt16 usData;
+        UInt32 ulData;
+        UInt64 ullData;
+        Float32 fData;
+        Float64 dData;
+        Int8 cData;
+        Int16 sData;
+        Int32 lData;
+        Int64 llData;
+        UInt8 ucBytes[8];
+    } ByteConvertor;
 
     class Payload
     {
-        public:
+    public:
         Payload()
-        : m_writeIndex(0)
-        , m_readIndex(0)
-        {};
-        ~Payload() {};
+            : m_writeIndex(0), m_readIndex(0){};
+        ~Payload(){};
 
-        void Write( uint8_t   &data );
-        void Write( uint16_t  &data );
-        void Write( uint32_t  &data );
-        void Write( uint64_t  &data );
-        void Write( int8_t    &data );
-        void Write( int16_t   &data );
-        void Write( int32_t   &data );
-        void Write( int64_t   &data );
-        void Write( float32_t &data );
-        void Write( float64_t &data );
+        void Write(UInt8 &);
+        void Write(UInt16 &);
+        void Write(UInt32 &);
+        void Write(UInt64 &);
+        void Write(Int8 &);
+        void Write(Int16 &);
+        void Write(Int32 &);
+        void Write(Int64 &);
+        void Write(Float32 &);
+        void Write(Float64 &);
 
-        void Read( uint8_t   &returnBuffer );
-        void Read( uint16_t  &returnBuffer );
-        void Read( uint32_t  &returnBuffer );
-        void Read( uint64_t  &returnBuffer );
-        void Read( int8_t    &returnBuffer );
-        void Read( int16_t   &returnBuffer );
-        void Read( int32_t   &returnBuffer );
-        void Read( int64_t   &returnBuffer );
-        void Read( float32_t &returnBuffer );
-        void Read( float64_t &returnBuffer );
+        void Read(UInt8 &);
+        void Read(UInt16 &);
+        void Read(UInt32 &);
+        void Read(UInt64 &);
+        void Read(Int8 &);
+        void Read(Int16 &);
+        void Read(Int32 &);
+        void Read(Int64 &);
+        void Read(Float32 &);
+        void Read(Float64 &);
 
-        uint8_t m_writeIndex;
-        uint8_t m_readIndex;
-        uint8_t m_dataCount;
-        uint8_t m_payloadBuffer[MAX_PAYLOAD_SIZE];
+        UInt8 m_writeIndex;
+        UInt8 m_readIndex;
+        UInt8 m_dataCount;
+        UInt8 m_payloadBuffer[MAX_PAYLOAD_SIZE];
 
-        void GetDataCount( uint8_t& dataCount );
-        void SetDataCount( uint8_t& dataCount );
+        void GetDataCount(UInt8 &dataCount);
+        void SetDataCount(UInt8 &dataCount);
         void EncodeReset();
-        void DecodeReset();  
-        void Reset();  
-        void WriteToBuffer( byteConnector_t &converter, uint8_t byteCount );
-        void ReadFromBuffer( byteConnector_t &converter, uint8_t byteCount );
+        void DecodeReset();
+        void Reset();
+        void WriteToBuffer(ByteConvertor &converter, UInt8 byteCount);
+        void ReadFromBuffer(ByteConvertor &converter, UInt8 byteCount);
     };
 }
 

@@ -2,21 +2,21 @@
 
 using namespace Needmon;
 
-uint8_t* Buffer::GetAddress()
+UInt8 *Buffer::GetAddress()
 {
     return m_buffer;
 }
 
-uint32_t Buffer::GetSize()
+UInt32 Buffer::GetSize()
 {
     return m_size;
 }
 
-uint8_t Buffer::Set(uint32_t index, uint8_t& value)
+UInt8 Buffer::Set(UInt32 index, UInt8 &value)
 {
-    uint8_t result = true;
+    UInt8 result = true;
 
-    if( index < m_size )
+    if (index < m_size)
     {
         m_buffer[index] = value;
     }
@@ -28,11 +28,11 @@ uint8_t Buffer::Set(uint32_t index, uint8_t& value)
     return result;
 }
 
-uint8_t Buffer::Get(uint32_t index, uint8_t& value)
+UInt8 Buffer::Get(UInt32 index, UInt8 &value)
 {
-    uint8_t result = true;
+    UInt8 result = true;
 
-    if( index < m_size )
+    if (index < m_size)
     {
         value = m_buffer[index];
     }

@@ -3,7 +3,7 @@
 using namespace Needmon;
 using namespace OSAL;
 
-Client::Client(Ethernet* ethernet)
+Client::Client(Ethernet *ethernet)
 {
     m_ethernet = ethernet;
 }
@@ -13,10 +13,10 @@ ErrorNo Client::Connect()
     int result = true;
 
     int32_t errNo = 0;
-    
-    errNo = Socket::_connect( m_ethernet->m_serverSocket, m_ethernet->m_serverSocketAddress);
 
-    if( errNo < 0 )
+    errNo = Socket::_connect(m_ethernet->m_serverSocket, m_ethernet->m_serverSocketAddress);
+
+    if (errNo < 0)
     {
         result = false;
     }
@@ -35,17 +35,17 @@ ErrorNo Client::Process()
     return result;
 }
 
-ErrorNo Client::Read(Buffer& buffer)
+ErrorNo Client::Read(Buffer &buffer)
 {
     ErrorNo result = false;
 
-    if( m_ethernet->m_serverSocket != 0 )
+    if (m_ethernet->m_serverSocket != 0)
     {
         int32_t size = 0;
 
-        size = result = Socket::_read( m_ethernet->m_serverSocket, buffer.GetAddress(), buffer.GetSize());
+        size = result = Socket::_read(m_ethernet->m_serverSocket, buffer.GetAddress(), buffer.GetSize());
 
-        if( size > 0)
+        if (size > 0)
         {
             result = true;
         }
@@ -53,22 +53,25 @@ ErrorNo Client::Read(Buffer& buffer)
         {
             result = false;
         }
-    } else {}
+    }
+    else
+    {
+    }
 
     return result;
 }
 
-ErrorNo Client::Write(Buffer& buffer)
+ErrorNo Client::Write(Buffer &buffer)
 {
     ErrorNo result = false;
 
-    if( m_ethernet->m_serverSocket != 0 )
+    if (m_ethernet->m_serverSocket != 0)
     {
-        int32_t size = 0;
+        Int32 size = 0;
 
-        size = Socket::_write( m_ethernet->m_serverSocket, buffer.GetAddress(), buffer.GetSize());
+        size = Socket::_write(m_ethernet->m_serverSocket, buffer.GetAddress(), buffer.GetSize());
 
-        if( size > 0)
+        if (size > 0)
         {
             result = true;
         }
@@ -76,7 +79,10 @@ ErrorNo Client::Write(Buffer& buffer)
         {
             result = false;
         }
-    } else {}
+    }
+    else
+    {
+    }
 
     return result;
 }

@@ -9,13 +9,13 @@ using namespace Needmon;
  * @param converter 
  * @param byteCount 
  */
-void Payload::WriteToBuffer( byteConnector_t &converter, uint8_t byteCount )
+void Payload::WriteToBuffer(ByteConvertor &converter, UInt8 byteCount)
 {
-    uint8_t idx = 0;
+    UInt8 idx = 0;
 
-    while( idx < byteCount )
+    while (idx < byteCount)
     {
-        m_payloadBuffer[ m_writeIndex++ ] = converter.ucBytes[ idx++ ];
+        m_payloadBuffer[m_writeIndex++] = converter.ucBytes[idx++];
     }
 
     m_dataCount = m_writeIndex;
@@ -26,302 +26,302 @@ void Payload::WriteToBuffer( byteConnector_t &converter, uint8_t byteCount )
  * @param converter 
  * @param byteCount 
  */
-void Payload::ReadFromBuffer( byteConnector_t &converter, uint8_t byteCount )
+void Payload::ReadFromBuffer(ByteConvertor &converter, UInt8 byteCount)
 {
-    uint8_t idx = 0;
+    UInt8 idx = 0;
 
-    while( idx < byteCount )
+    while (idx < byteCount)
     {
-        converter.ucBytes[ idx++ ] = m_payloadBuffer[ m_readIndex++ ];
+        converter.ucBytes[idx++] = m_payloadBuffer[m_readIndex++];
     }
 }
 
 /**
  * @brief 
  * 
- * @param data 
+ * @param writeBuffer 
  */
-void Payload::Write( uint8_t &data )
+void Payload::Write(UInt8 &writeBuffer)
 {
-    byteConnector_t convertor = { 0 };
-    
-    convertor.ucData = data;
+    ByteConvertor convertor = {0};
 
-    WriteToBuffer( convertor, sizeof( data ) );
+    convertor.ucData = writeBuffer;
+
+    WriteToBuffer(convertor, sizeof(writeBuffer));
 }
 
 /**
  * @brief 
  * 
- * @param data 
+ * @param writeBuffer 
  */
-void Payload::Write( uint16_t &data )
+void Payload::Write(UInt16 &writeBuffer)
 {
-    byteConnector_t convertor = { 0 };
-    
-    convertor.usData = data;
+    ByteConvertor convertor = {0};
 
-    WriteToBuffer( convertor, sizeof( data ) );
+    convertor.usData = writeBuffer;
+
+    WriteToBuffer(convertor, sizeof(writeBuffer));
 }
 
 /**
  * @brief 
  * 
- * @param data 
+ * @param writeBuffer 
  */
-void Payload::Write( uint32_t &data )
+void Payload::Write(UInt32 &writeBuffer)
 {
-    byteConnector_t convertor = { 0 };
-    
-    convertor.ulData = data;
+    ByteConvertor convertor = {0};
 
-    WriteToBuffer( convertor, sizeof( data ) );
+    convertor.ulData = writeBuffer;
+
+    WriteToBuffer(convertor, sizeof(writeBuffer));
 }
 
 /**
  * @brief 
  * 
- * @param data 
+ * @param writeBuffer 
  */
-void Payload::Write( uint64_t &data )
+void Payload::Write(UInt64 &writeBuffer)
 {
-    byteConnector_t convertor = { 0 };
-    
-    convertor.ullData = data;
+    ByteConvertor convertor = {0};
 
-    WriteToBuffer( convertor, sizeof( data ) );
+    convertor.ullData = writeBuffer;
+
+    WriteToBuffer(convertor, sizeof(writeBuffer));
 }
 
 /**
  * @brief 
  * 
- * @param data 
+ * @param writeBuffer 
  */
-void Payload::Write( int8_t &data )
+void Payload::Write(Int8 &writeBuffer)
 {
-    byteConnector_t convertor = { 0 };
-    
-    convertor.cData = data;
+    ByteConvertor convertor = {0};
 
-    WriteToBuffer( convertor, sizeof( data ) );
+    convertor.cData = writeBuffer;
+
+    WriteToBuffer(convertor, sizeof(writeBuffer));
 }
 
 /**
  * @brief 
  * 
- * @param data 
+ * @param writeBuffer 
  */
-void Payload::Write( int16_t &data )
+void Payload::Write(Int16 &writeBuffer)
 {
-    byteConnector_t convertor = { 0 };
-    
-    convertor.sData = data;
+    ByteConvertor convertor = {0};
 
-    WriteToBuffer( convertor, sizeof( data ) );
+    convertor.sData = writeBuffer;
+
+    WriteToBuffer(convertor, sizeof(writeBuffer));
 }
 
 /**
  * @brief 
  * 
- * @param data 
+ * @param writeBuffer 
  */
-void Payload::Write( int32_t &data )
+void Payload::Write(Int32 &writeBuffer)
 {
-    byteConnector_t convertor = { 0 };
-    
-    convertor.lData = data;
+    ByteConvertor convertor = {0};
 
-    WriteToBuffer( convertor, sizeof( data ) );
+    convertor.lData = writeBuffer;
+
+    WriteToBuffer(convertor, sizeof(writeBuffer));
 }
 
 /**
  * @brief 
  * 
- * @param data 
+ * @param writeBuffer 
  */
-void Payload::Write( int64_t &data )
+void Payload::Write(Int64 &writeBuffer)
 {
-    byteConnector_t convertor = { 0 };
-    
-    convertor.llData = data;
+    ByteConvertor convertor = {0};
 
-    WriteToBuffer( convertor, sizeof( data ) );
+    convertor.llData = writeBuffer;
+
+    WriteToBuffer(convertor, sizeof(writeBuffer));
 }
 
 /**
  * @brief 
  * 
- * @param data 
+ * @param writeBuffer 
  */
-void Payload::Write( float32_t &data )
+void Payload::Write(Float32 &writeBuffer)
 {
-    byteConnector_t convertor = { 0 };
-    
-    convertor.fData = data;
+    ByteConvertor convertor = {0};
 
-    WriteToBuffer( convertor, sizeof( data ) );
+    convertor.fData = writeBuffer;
+
+    WriteToBuffer(convertor, sizeof(writeBuffer));
 }
 
 /**
  * @brief 
  * 
- * @param data 
+ * @param writeBuffer 
  */
-void Payload::Write( float64_t &data )
+void Payload::Write(Float64 &writeBuffer)
 {
-    byteConnector_t convertor = { 0 };
-    
-    convertor.dData = data;
+    ByteConvertor convertor = {0};
 
-    WriteToBuffer( convertor, sizeof( data ) );
+    convertor.dData = writeBuffer;
+
+    WriteToBuffer(convertor, sizeof(writeBuffer));
 }
 
 /**
  * @brief 
  * 
- * @param returnBuffer 
+ * @param readBuffer 
  */
-void Payload::Read( uint8_t &returnBuffer )
+void Payload::Read(UInt8 &readBuffer)
 {
-    byteConnector_t convertor = { 0 };
+    ByteConvertor convertor = {0};
 
-    ReadFromBuffer( convertor, sizeof(returnBuffer) );
+    ReadFromBuffer(convertor, sizeof(readBuffer));
 
-    returnBuffer = convertor.ucData;  
+    readBuffer = convertor.ucData;
 }
 
 /**
  * @brief 
  * 
- * @param returnBuffer 
+ * @param readBuffer 
  */
-void Payload::Read( uint16_t &returnBuffer )
+void Payload::Read(UInt16 &readBuffer)
 {
-    byteConnector_t convertor = { 0 };
+    ByteConvertor convertor = {0};
 
-    ReadFromBuffer( convertor, sizeof(returnBuffer) );
+    ReadFromBuffer(convertor, sizeof(readBuffer));
 
-    returnBuffer = convertor.usData;  
+    readBuffer = convertor.usData;
 }
 
 /**
  * @brief 
  * 
- * @param returnBuffer 
+ * @param readBuffer 
  */
-void Payload::Read( uint32_t &returnBuffer )
+void Payload::Read(UInt32 &readBuffer)
 {
-    byteConnector_t convertor = { 0 };
+    ByteConvertor convertor = {0};
 
-    ReadFromBuffer( convertor, sizeof(returnBuffer) );
+    ReadFromBuffer(convertor, sizeof(readBuffer));
 
-    returnBuffer = convertor.ulData;  
+    readBuffer = convertor.ulData;
 }
 
 /**
  * @brief 
  * 
- * @param returnBuffer 
+ * @param readBuffer 
  */
-void Payload::Read( uint64_t &returnBuffer )
+void Payload::Read(UInt64 &readBuffer)
 {
-    byteConnector_t convertor = { 0 };
+    ByteConvertor convertor = {0};
 
-    ReadFromBuffer( convertor, sizeof(returnBuffer) );
+    ReadFromBuffer(convertor, sizeof(readBuffer));
 
-    returnBuffer = convertor.ullData;  
+    readBuffer = convertor.ullData;
 }
 
 /**
  * @brief 
  * 
- * @param returnBuffer 
+ * @param readBuffer 
  */
-void Payload::Read( int8_t &returnBuffer )
+void Payload::Read(Int8 &readBuffer)
 {
-    byteConnector_t convertor = { 0 };
+    ByteConvertor convertor = {0};
 
-    ReadFromBuffer( convertor, sizeof(returnBuffer) );
+    ReadFromBuffer(convertor, sizeof(readBuffer));
 
-    returnBuffer = convertor.cData;  
+    readBuffer = convertor.cData;
 }
 
 /**
  * @brief 
  * 
- * @param returnBuffer 
+ * @param readBuffer 
  */
-void Payload::Read( int16_t &returnBuffer )
+void Payload::Read(Int16 &readBuffer)
 {
-    byteConnector_t convertor = { 0 };
+    ByteConvertor convertor = {0};
 
-    ReadFromBuffer( convertor, sizeof(returnBuffer) );
+    ReadFromBuffer(convertor, sizeof(readBuffer));
 
-    returnBuffer = convertor.sData;  
+    readBuffer = convertor.sData;
 }
 
 /**
  * @brief 
  * 
- * @param returnBuffer 
+ * @param readBuffer 
  */
-void Payload::Read( int32_t &returnBuffer )
+void Payload::Read(Int32 &readBuffer)
 {
-    byteConnector_t convertor = { 0 };
+    ByteConvertor convertor = {0};
 
-    ReadFromBuffer( convertor, sizeof(returnBuffer) );
+    ReadFromBuffer(convertor, sizeof(readBuffer));
 
-    returnBuffer = convertor.lData;  
+    readBuffer = convertor.lData;
 }
 
 /**
  * @brief 
  * 
- * @param returnBuffer 
+ * @param readBuffer 
  */
-void Payload::Read( int64_t &returnBuffer )
+void Payload::Read(Int64 &readBuffer)
 {
-    byteConnector_t convertor = { 0 };
+    ByteConvertor convertor = {0};
 
-    ReadFromBuffer( convertor, sizeof(returnBuffer) );
+    ReadFromBuffer(convertor, sizeof(readBuffer));
 
-    returnBuffer = convertor.llData;  
-}
-
-    /**
- * @brief 
- * 
- * @param returnBuffer 
- */
-void Payload::Read( float32_t &returnBuffer )
-{
-    byteConnector_t convertor = { 0 };
-
-    ReadFromBuffer( convertor, sizeof(returnBuffer) );
-
-    returnBuffer = convertor.fData;  
+    readBuffer = convertor.llData;
 }
 
 /**
  * @brief 
  * 
- * @param returnBuffer 
+ * @param readBuffer 
  */
-void Payload::Read( float64_t &returnBuffer )
+void Payload::Read(Float32 &readBuffer)
 {
-    byteConnector_t convertor = { 0 };
+    ByteConvertor convertor = {0};
 
-    ReadFromBuffer( convertor, sizeof(returnBuffer) );
+    ReadFromBuffer(convertor, sizeof(readBuffer));
 
-    returnBuffer = convertor.dData;  
+    readBuffer = convertor.fData;
 }
 
-void Payload::GetDataCount( uint8_t& dataCount )
+/**
+ * @brief 
+ * 
+ * @param readBuffer 
+ */
+void Payload::Read(Float64 &readBuffer)
+{
+    ByteConvertor convertor = {0};
+
+    ReadFromBuffer(convertor, sizeof(readBuffer));
+
+    readBuffer = convertor.dData;
+}
+
+void Payload::GetDataCount(UInt8 &dataCount)
 {
     dataCount = m_dataCount;
 }
 
-void Payload::SetDataCount( uint8_t& dataCount )
+void Payload::SetDataCount(UInt8 &dataCount)
 {
     m_dataCount = dataCount;
     m_writeIndex = m_dataCount;
@@ -335,12 +335,12 @@ void Payload::Reset()
 
 void Payload::EncodeReset()
 {
-    m_writeIndex  = 0;
-    m_readIndex   = 0;
-    m_dataCount   = 0;
+    m_writeIndex = 0;
+    m_readIndex = 0;
+    m_dataCount = 0;
 }
 
 void Payload::DecodeReset()
 {
-    m_readIndex   = 0;
+    m_readIndex = 0;
 }
