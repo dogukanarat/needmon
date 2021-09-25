@@ -1,2 +1,2 @@
 # Needmon
-Custom IPC message protocol using sockets
+Custom message protocol library
