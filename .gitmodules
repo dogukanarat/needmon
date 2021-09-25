@@ -1,0 +1,7 @@
+[submodule "library/googletest"]
+	path = library/googletest
+	url = https://github.com/google/googletest
+
+[submodule "library/osal"]
+	path = library/osal
+	url = https://github.com/dogukanarat/osal
