@@ -1,7 +1,7 @@
 #ifndef _NEEDMON_ETHERNET_SERVER_H
 #define _NEEDMON_ETHERNET_SERVER_H
 
-#include <osal.h>
+#include "osal/osal.h"
 #include "types.h"
 #include "buffer.h"
 #include "communication.h"

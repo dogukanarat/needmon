@@ -1,7 +1,7 @@
 #ifndef _NEEDMON_COMMUNICATION_H
 #define _NEEDMON_COMMUNICATION_H
 
-#include <osal.h>
+#include "osal/osal.h"
 #include "types.h"
 #include "buffer.h"
 

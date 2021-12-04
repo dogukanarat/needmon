@@ -1,4 +1,4 @@
-#include "topic.h"
+#include "needmon/topic.h"
 
 using namespace Needmon;
 using namespace std;

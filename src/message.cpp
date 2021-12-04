@@ -1,4 +1,4 @@
-#include "message.h"
+#include "needmon/message.h"
 
 using namespace Needmon;
 

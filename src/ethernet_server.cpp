@@ -1,4 +1,4 @@
-#include "ethernet_server.h"
+#include "needmon/ethernet_server.h"
 
 using namespace Needmon;
 using namespace OSAL;

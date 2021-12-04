@@ -14,8 +14,8 @@ namespace Needmon
         Buffer(){};
         ~Buffer(){};
 
-        UInt8 Set(uint32_t index, UInt8 &value);
-        UInt8 Get(uint32_t index, UInt8 &value);
+        UInt8 Set(UInt32 index, UInt8 &value);
+        UInt8 Get(UInt32 index, UInt8 &value);
         UInt8 *GetAddress();
         UInt32 GetSize();
 
