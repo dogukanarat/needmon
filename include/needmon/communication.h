@@ -12,6 +12,12 @@ namespace Needmon
     class Communication
     {
     public:
+        Communication()
+        : m_buffer(Buffer())
+        , m_receiveHandler(NULL)
+        {};
+        virtual ~Communication() {};
+
         virtual ErrorNo SetHandler(void (*receiveHandler)(UInt8 *, UInt32))
         {
             m_receiveHandler = receiveHandler;
@@ -23,11 +29,8 @@ namespace Needmon
         virtual ErrorNo Write(Buffer &buffer) = 0;
 
     protected:
-        Communication(){};
-        virtual ~Communication(){};
-
         Buffer m_buffer;
-        void (*m_receiveHandler)(UInt8 *, UInt32) = nullptr;
+        void (*m_receiveHandler)(UInt8 *, UInt32);
     };
 
 }

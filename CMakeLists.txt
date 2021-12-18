@@ -8,13 +8,23 @@ project(
 
 add_subdirectory(library)
 
-list(APPEND CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/library/osal/cmake)
+list(
+    APPEND
+    CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/library/osal/cmake
+    )
 
 find_package(osal REQUIRED CONFIG)
 
 cmake_minimum_required(VERSION 3.15)
 
-add_library(${PROJECT_NAME})
+add_library(
+    ${PROJECT_NAME}
+    )
+
+set_property(
+    TARGET ${PROJECT_NAME}
+    PROPERTY CXX_STANDARD 17
+    )
 
 target_sources(
     ${PROJECT_NAME}
@@ -61,3 +71,5 @@ install(
     DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/include/${PROJECT_NAME}/
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}
     )
+
+# add_subdirectory(test)

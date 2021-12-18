@@ -3,11 +3,6 @@
 using namespace Needmon;
 using namespace OSAL;
 
-Client::Client(Ethernet *ethernet)
-{
-    m_ethernet = ethernet;
-}
-
 ErrorNo Client::Connect()
 {
     Int32 result = true;

@@ -11,7 +11,10 @@ namespace Needmon
     class Buffer
     {
     public:
-        Buffer(){};
+        Buffer()
+        : m_size(BUFFER_SIZE)
+        {};
+
         ~Buffer(){};
 
         UInt8 Set(UInt32 index, UInt8 &value);
@@ -20,7 +23,7 @@ namespace Needmon
         UInt32 GetSize();
 
     protected:
-        UInt32 m_size = BUFFER_SIZE;
+        UInt32 m_size;
         UInt8 m_buffer[BUFFER_SIZE];
     };
 }

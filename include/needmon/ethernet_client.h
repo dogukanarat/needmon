@@ -12,7 +12,9 @@ namespace Needmon
     class Client : public Communication
     {
     public:
-        Client(Ethernet *ethernet);
+        Client(Ethernet *ethernet)
+            : m_ethernet(ethernet)
+            {};
         ~Client(){};
 
         Ethernet *m_ethernet;
