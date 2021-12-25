@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include "osal/osal.h"
 
 namespace Test
 {

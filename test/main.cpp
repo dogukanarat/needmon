@@ -5,6 +5,7 @@ using namespace Test;
 // Tests that the Foo::Bar() method does Abc.
 TEST_F(FooTest, MethodBarDoesAbc)
 {
+    OSAL::OS::print("Printf test!");
 
     EXPECT_EQ(0, 0);
 }
